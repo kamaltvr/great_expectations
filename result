@@ -1,0 +1,1615 @@
+
+(pocenv) (base) D:\project\jupyter\poc1>
+(pocenv) (base) D:\project\jupyter\poc1>python
+Python 3.9.7 (default, Sep 16 2021, 16:59:28) [MSC v.1916 64 bit (AMD64)] :: Anaconda, Inc. on win32
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import great_expectations as ge
+>>> context = ge.data_context.DataContext()
+>>> suite = context.create_expectation_suite(
+...     'check_avocado_data',
+...     overwrite_existing=True
+... )
+>>> batch_kwargs = {
+...     'path': 'data/avocado.csv',
+...     'datasource': 'data_dir',
+...     'data_asset_name': 'avocado',
+...     'reader_method': 'read_csv',
+...     'reader_options': {
+...         'index_col': 0,
+...     }
+... }
+>>> batch = context.get_batch(batch_kwargs, suite)
+>>> batch.head()
+         Date  AveragePrice  Total Volume     4046       4225  ...  Large Bags  XLarge Bags          type  year  region
+0  2015-12-27          1.33      64236.62  1036.74   54454.85  ...       93.25          0.0  conventional  2015  Albany
+1  2015-12-20          1.35      54876.98   674.28   44638.81  ...       97.49          0.0  conventional  2015  Albany
+2  2015-12-13          0.93     118220.22   794.70  109149.67  ...      103.14          0.0  conventional  2015  Albany
+3  2015-12-06          1.08      78992.15  1132.00   71976.41  ...      133.76          0.0  conventional  2015  Albany
+4  2015-11-29          1.28      51039.60   941.48   43838.39  ...      197.69          0.0  conventional  2015  Albany
+
+[5 rows x 13 columns]
+>>>
+>>> batch.expect_column_to_exist('Date')
+{
+  "expectation_config": {
+    "expectation_type": "expect_column_to_exist",
+    "kwargs": {
+      "column": "Date",
+      "result_format": "BASIC"
+    },
+    "meta": {}
+  },
+  "success": true,
+  "result": {},
+  "exception_info": {
+    "raised_exception": false,
+    "exception_traceback": null,
+    "exception_message": null
+  },
+  "meta": {}
+}
+>>> batch.expect_column_values_to_not_be_null('region')
+{
+  "expectation_config": {
+    "expectation_type": "expect_column_values_to_not_be_null",
+    "kwargs": {
+      "column": "region",
+      "result_format": "BASIC"
+    },
+    "meta": {}
+  },
+  "success": true,
+  "result": {
+    "element_count": 18249,
+    "unexpected_count": 0,
+    "unexpected_percent": 0.0,
+    "unexpected_percent_total": 0.0,
+    "partial_unexpected_list": []
+  },
+  "exception_info": {
+    "raised_exception": false,
+    "exception_traceback": null,
+    "exception_message": null
+  },
+  "meta": {}
+}
+>>> batch.expect_column_values_to_be_of_type('region', 'str')
+{
+  "expectation_config": {
+    "expectation_type": "_expect_column_values_to_be_of_type__map",
+    "kwargs": {
+      "column": "region",
+      "type_": "str",
+      "result_format": "BASIC"
+    },
+    "meta": {}
+  },
+  "success": true,
+  "result": {
+    "element_count": 18249,
+    "missing_count": 0,
+    "missing_percent": 0.0,
+    "unexpected_count": 0,
+    "unexpected_percent": 0.0,
+    "unexpected_percent_total": 0.0,
+    "unexpected_percent_nonmissing": 0.0,
+    "partial_unexpected_list": []
+  },
+  "exception_info": {
+    "raised_exception": false,
+    "exception_traceback": null,
+    "exception_message": null
+  },
+  "meta": {}
+}
+>>> batch.expect_column_values_to_be_of_type('region', 'int')
+{
+  "expectation_config": {
+    "expectation_type": "_expect_column_values_to_be_of_type__map",
+    "kwargs": {
+      "column": "region",
+      "type_": "int",
+      "result_format": "BASIC"
+    },
+    "meta": {}
+  },
+  "success": false,
+  "result": {
+    "element_count": 18249,
+    "missing_count": 0,
+    "missing_percent": 0.0,
+    "unexpected_count": 18249,
+    "unexpected_percent": 100.0,
+    "unexpected_percent_total": 100.0,
+    "unexpected_percent_nonmissing": 100.0,
+    "partial_unexpected_list": [
+      "Albany",
+      "Albany",
+      "Albany",
+      "Albany",
+      "Albany",
+      "Albany",
+      "Albany",
+      "Albany",
+      "Albany",
+      "Albany",
+      "Albany",
+      "Albany",
+      "Albany",
+      "Albany",
+      "Albany",
+      "Albany",
+      "Albany",
+      "Albany",
+      "Albany",
+      "Albany"
+    ]
+  },
+  "exception_info": {
+    "raised_exception": false,
+    "exception_traceback": null,
+    "exception_message": null
+  },
+  "meta": {}
+}
+>>> batch.expect_column_values_to_match_strftime_format('Date', "%Y-%m-%d")
+{
+  "expectation_config": {
+    "expectation_type": "expect_column_values_to_match_strftime_format",
+    "kwargs": {
+      "column": "Date",
+      "strftime_format": "%Y-%m-%d",
+      "result_format": "BASIC"
+    },
+    "meta": {}
+  },
+  "success": true,
+  "result": {
+    "element_count": 18249,
+    "missing_count": 0,
+    "missing_percent": 0.0,
+    "unexpected_count": 0,
+    "unexpected_percent": 0.0,
+    "unexpected_percent_total": 0.0,
+    "unexpected_percent_nonmissing": 0.0,
+    "partial_unexpected_list": []
+  },
+  "exception_info": {
+    "raised_exception": false,
+    "exception_traceback": null,
+    "exception_message": null
+  },
+  "meta": {}
+}
+>>> batch.expect_column_values_to_match_strftime_format('Date', "%m-%Y-%d")
+{
+  "expectation_config": {
+    "expectation_type": "expect_column_values_to_match_strftime_format",
+    "kwargs": {
+      "column": "Date",
+      "strftime_format": "%m-%Y-%d",
+      "result_format": "BASIC"
+    },
+    "meta": {}
+  },
+  "success": false,
+  "result": {
+    "element_count": 18249,
+    "missing_count": 0,
+    "missing_percent": 0.0,
+    "unexpected_count": 18249,
+    "unexpected_percent": 100.0,
+    "unexpected_percent_total": 100.0,
+    "unexpected_percent_nonmissing": 100.0,
+    "partial_unexpected_list": [
+      "2015-12-27",
+      "2015-12-20",
+      "2015-12-13",
+      "2015-12-06",
+      "2015-11-29",
+      "2015-11-22",
+      "2015-11-15",
+      "2015-11-08",
+      "2015-11-01",
+      "2015-10-25",
+      "2015-10-18",
+      "2015-10-11",
+      "2015-10-04",
+      "2015-09-27",
+      "2015-09-20",
+      "2015-09-13",
+      "2015-09-06",
+      "2015-08-30",
+      "2015-08-23",
+      "2015-08-16"
+    ]
+  },
+  "exception_info": {
+    "raised_exception": false,
+    "exception_traceback": null,
+    "exception_message": null
+  },
+  "meta": {}
+}
+>>> batch.expect_column_values_to_be_between('AveragePrice', min_value=0.5, max_value=3.0)
+{
+  "expectation_config": {
+    "expectation_type": "expect_column_values_to_be_between",
+    "kwargs": {
+      "column": "AveragePrice",
+      "min_value": 0.5,
+      "max_value": 3.0,
+      "result_format": "BASIC"
+    },
+    "meta": {}
+  },
+  "success": false,
+  "result": {
+    "element_count": 18249,
+    "missing_count": 0,
+    "missing_percent": 0.0,
+    "unexpected_count": 11,
+    "unexpected_percent": 0.06027727546714888,
+    "unexpected_percent_total": 0.06027727546714888,
+    "unexpected_percent_nonmissing": 0.06027727546714888,
+    "partial_unexpected_list": [
+      0.49,
+      0.46,
+      3.03,
+      3.12,
+      3.25,
+      0.44,
+      0.49,
+      0.48,
+      3.05,
+      3.04,
+      3.17
+    ]
+  },
+  "exception_info": {
+    "raised_exception": false,
+    "exception_traceback": null,
+    "exception_message": null
+  },
+  "meta": {}
+}
+>>> partition_object = {
+...     'values': ['conventional', 'organic'],
+...     'weights': [0.5, 0.5],
+...
+... }
+>>> batch.expect_column_kl_divergence_to_be_less_than('type', partition_object, 0.1)
+{
+  "expectation_config": {
+    "expectation_type": "expect_column_kl_divergence_to_be_less_than",
+    "kwargs": {
+      "column": "type",
+      "partition_object": {
+        "values": [
+          "conventional",
+          "organic"
+        ],
+        "weights": [
+          0.5,
+          0.5
+        ]
+      },
+      "threshold": 0.1,
+      "result_format": "BASIC"
+    },
+    "meta": {}
+  },
+  "success": true,
+  "result": {
+    "observed_value": 1.351245850704074e-08,
+    "element_count": 18249,
+    "missing_count": null,
+    "missing_percent": null
+  },
+  "exception_info": {
+    "raised_exception": false,
+    "exception_traceback": null,
+    "exception_message": null
+  },
+  "meta": {}
+}
+>>> batch.get_expectation_suite()
+{
+  "expectation_suite_name": "check_avocado_data",
+  "data_asset_type": "Dataset",
+  "expectations": [
+    {
+      "expectation_type": "expect_column_to_exist",
+      "kwargs": {
+        "column": "Date"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "region"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_kl_divergence_to_be_less_than",
+      "kwargs": {
+        "column": "type",
+        "partition_object": {
+          "values": [
+            "conventional",
+            "organic"
+          ],
+          "weights": [
+            0.5,
+            0.5
+          ]
+        },
+        "threshold": 0.1
+      },
+      "meta": {}
+    }
+  ],
+  "ge_cloud_id": null,
+  "meta": {
+    "great_expectations_version": "0.15.20"
+  }
+}
+>>> results = context.run_validation_operator('my_validation_operator', assets_to_validate=[batch])
+>>> results
+{
+  "evaluation_parameters": null,
+  "run_results": {
+    "ValidationResultIdentifier::check_avocado_data/20220831T050716.961555Z/20220831T050716.961555Z/966da3deeba5d9b2be246213aa75e7b7": {
+      "validation_result": {
+        "statistics": {
+          "evaluated_expectations": 6,
+          "successful_expectations": 3,
+          "unsuccessful_expectations": 3,
+          "success_percent": 50.0
+        },
+        "evaluation_parameters": {},
+        "results": [
+          {
+            "expectation_config": {
+              "expectation_type": "expect_column_to_exist",
+              "kwargs": {
+                "column": "Date",
+                "result_format": {
+                  "result_format": "SUMMARY"
+                }
+              },
+              "meta": {}
+            },
+            "success": true,
+            "result": {},
+            "exception_info": {
+              "raised_exception": false,
+              "exception_message": null,
+              "exception_traceback": null
+            },
+            "meta": {}
+          },
+          {
+            "expectation_config": {
+              "expectation_type": "expect_column_values_to_match_strftime_format",
+              "kwargs": {
+                "column": "Date",
+                "strftime_format": "%m-%Y-%d",
+                "result_format": {
+                  "result_format": "SUMMARY"
+                }
+              },
+              "meta": {}
+            },
+            "success": false,
+            "result": {
+              "element_count": 18249,
+              "missing_count": 0,
+              "missing_percent": 0.0,
+              "unexpected_count": 18249,
+              "unexpected_percent": 100.0,
+              "unexpected_percent_total": 100.0,
+              "unexpected_percent_nonmissing": 100.0,
+              "partial_unexpected_list": [
+                "2015-12-27",
+                "2015-12-20",
+                "2015-12-13",
+                "2015-12-06",
+                "2015-11-29",
+                "2015-11-22",
+                "2015-11-15",
+                "2015-11-08",
+                "2015-11-01",
+                "2015-10-25",
+                "2015-10-18",
+                "2015-10-11",
+                "2015-10-04",
+                "2015-09-27",
+                "2015-09-20",
+                "2015-09-13",
+                "2015-09-06",
+                "2015-08-30",
+                "2015-08-23",
+                "2015-08-16"
+              ],
+              "partial_unexpected_index_list": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19
+              ],
+              "partial_unexpected_counts": [
+                {
+                  "value": "2015-08-09",
+                  "count": 108
+                },
+                {
+                  "value": "2015-08-16",
+                  "count": 108
+                },
+                {
+                  "value": "2015-08-23",
+                  "count": 108
+                },
+                {
+                  "value": "2015-08-30",
+                  "count": 108
+                },
+                {
+                  "value": "2015-09-06",
+                  "count": 108
+                },
+                {
+                  "value": "2015-09-13",
+                  "count": 108
+                },
+                {
+                  "value": "2015-09-20",
+                  "count": 108
+                },
+                {
+                  "value": "2015-09-27",
+                  "count": 108
+                },
+                {
+                  "value": "2015-10-04",
+                  "count": 108
+                },
+                {
+                  "value": "2015-10-11",
+                  "count": 108
+                },
+                {
+                  "value": "2015-10-18",
+                  "count": 108
+                },
+                {
+                  "value": "2015-10-25",
+                  "count": 108
+                },
+                {
+                  "value": "2015-11-01",
+                  "count": 108
+                },
+                {
+                  "value": "2015-11-08",
+                  "count": 108
+                },
+                {
+                  "value": "2015-11-15",
+                  "count": 108
+                },
+                {
+                  "value": "2015-11-22",
+                  "count": 108
+                },
+                {
+                  "value": "2015-11-29",
+                  "count": 108
+                },
+                {
+                  "value": "2015-12-13",
+                  "count": 108
+                },
+                {
+                  "value": "2015-12-20",
+                  "count": 108
+                },
+                {
+                  "value": "2015-12-27",
+                  "count": 108
+                }
+              ]
+            },
+            "exception_info": {
+              "raised_exception": false,
+              "exception_message": null,
+              "exception_traceback": null
+            },
+            "meta": {}
+          },
+          {
+            "expectation_config": {
+              "expectation_type": "expect_column_values_to_not_be_null",
+              "kwargs": {
+                "column": "region",
+                "result_format": {
+                  "result_format": "SUMMARY"
+                }
+              },
+              "meta": {}
+            },
+            "success": true,
+            "result": {
+              "element_count": 18249,
+              "unexpected_count": 0,
+              "unexpected_percent": 0.0,
+              "unexpected_percent_total": 0.0,
+              "partial_unexpected_list": []
+            },
+            "exception_info": {
+              "raised_exception": false,
+              "exception_message": null,
+              "exception_traceback": null
+            },
+            "meta": {}
+          },
+          {
+            "expectation_config": {
+              "expectation_type": "expect_column_values_to_be_of_type",
+              "kwargs": {
+                "column": "region",
+                "type_": "int",
+                "result_format": {
+                  "result_format": "SUMMARY"
+                }
+              },
+              "meta": {}
+            },
+            "success": false,
+            "result": {
+              "element_count": 18249,
+              "missing_count": 0,
+              "missing_percent": 0.0,
+              "unexpected_count": 18249,
+              "unexpected_percent": 100.0,
+              "unexpected_percent_total": 100.0,
+              "unexpected_percent_nonmissing": 100.0,
+              "partial_unexpected_list": [
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany"
+              ],
+              "partial_unexpected_index_list": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19
+              ],
+              "partial_unexpected_counts": [
+                {
+                  "value": "Albany",
+                  "count": 338
+                },
+                {
+                  "value": "Atlanta",
+                  "count": 338
+                },
+                {
+                  "value": "BaltimoreWashington",
+                  "count": 338
+                },
+                {
+                  "value": "Boise",
+                  "count": 338
+                },
+                {
+                  "value": "Boston",
+                  "count": 338
+                },
+                {
+                  "value": "BuffaloRochester",
+                  "count": 338
+                },
+                {
+                  "value": "California",
+                  "count": 338
+                },
+                {
+                  "value": "Charlotte",
+                  "count": 338
+                },
+                {
+                  "value": "Chicago",
+                  "count": 338
+                },
+                {
+                  "value": "CincinnatiDayton",
+                  "count": 338
+                },
+                {
+                  "value": "Columbus",
+                  "count": 338
+                },
+                {
+                  "value": "DallasFtWorth",
+                  "count": 338
+                },
+                {
+                  "value": "Denver",
+                  "count": 338
+                },
+                {
+                  "value": "Detroit",
+                  "count": 338
+                },
+                {
+                  "value": "GrandRapids",
+                  "count": 338
+                },
+                {
+                  "value": "GreatLakes",
+                  "count": 338
+                },
+                {
+                  "value": "HarrisburgScranton",
+                  "count": 338
+                },
+                {
+                  "value": "HartfordSpringfield",
+                  "count": 338
+                },
+                {
+                  "value": "Houston",
+                  "count": 338
+                },
+                {
+                  "value": "Indianapolis",
+                  "count": 338
+                }
+              ]
+            },
+            "exception_info": {
+              "raised_exception": false,
+              "exception_message": null,
+              "exception_traceback": null
+            },
+            "meta": {}
+          },
+          {
+            "expectation_config": {
+              "expectation_type": "expect_column_values_to_be_between",
+              "kwargs": {
+                "column": "AveragePrice",
+                "min_value": 0.5,
+                "max_value": 3.0,
+                "result_format": {
+                  "result_format": "SUMMARY"
+                }
+              },
+              "meta": {}
+            },
+            "success": false,
+            "result": {
+              "element_count": 18249,
+              "missing_count": 0,
+              "missing_percent": 0.0,
+              "unexpected_count": 11,
+              "unexpected_percent": 0.06027727546714888,
+              "unexpected_percent_total": 0.06027727546714888,
+              "unexpected_percent_nonmissing": 0.06027727546714888,
+              "partial_unexpected_list": [
+                0.49,
+                0.46,
+                3.03,
+                3.12,
+                3.25,
+                0.44,
+                0.49,
+                0.48,
+                3.05,
+                3.04,
+                3.17
+              ],
+              "partial_unexpected_index_list": [
+                0,
+                47,
+                12,
+                7,
+                8,
+                43,
+                44,
+                43,
+                42,
+                18,
+                37
+              ],
+              "partial_unexpected_counts": [
+                {
+                  "value": 0.49,
+                  "count": 2
+                },
+                {
+                  "value": 0.44,
+                  "count": 1
+                },
+                {
+                  "value": 0.46,
+                  "count": 1
+                },
+                {
+                  "value": 0.48,
+                  "count": 1
+                },
+                {
+                  "value": 3.03,
+                  "count": 1
+                },
+                {
+                  "value": 3.04,
+                  "count": 1
+                },
+                {
+                  "value": 3.05,
+                  "count": 1
+                },
+                {
+                  "value": 3.12,
+                  "count": 1
+                },
+                {
+                  "value": 3.17,
+                  "count": 1
+                },
+                {
+                  "value": 3.25,
+                  "count": 1
+                }
+              ]
+            },
+            "exception_info": {
+              "raised_exception": false,
+              "exception_message": null,
+              "exception_traceback": null
+            },
+            "meta": {}
+          },
+          {
+            "expectation_config": {
+              "expectation_type": "expect_column_kl_divergence_to_be_less_than",
+              "kwargs": {
+                "column": "type",
+                "partition_object": {
+                  "values": [
+                    "conventional",
+                    "organic"
+                  ],
+                  "weights": [
+                    0.5,
+                    0.5
+                  ]
+                },
+                "threshold": 0.1,
+                "result_format": {
+                  "result_format": "SUMMARY"
+                }
+              },
+              "meta": {}
+            },
+            "success": true,
+            "result": {
+              "observed_value": 1.351245850704074e-08,
+              "element_count": 18249,
+              "missing_count": null,
+              "missing_percent": null,
+              "details": {
+                "observed_partition": {
+                  "values": [
+                    "conventional",
+                    "organic"
+                  ],
+                  "weights": [
+                    0.5000821962847279,
+                    0.49991780371527206
+                  ]
+                },
+                "expected_partition": {
+                  "values": [
+                    "conventional",
+                    "organic"
+                  ],
+                  "weights": [
+                    0.5,
+                    0.5
+                  ]
+                }
+              }
+            },
+            "exception_info": {
+              "raised_exception": false,
+              "exception_message": null,
+              "exception_traceback": null
+            },
+            "meta": {}
+          }
+        ],
+        "success": false,
+        "meta": {
+          "great_expectations_version": "0.15.20",
+          "expectation_suite_name": "check_avocado_data",
+          "run_id": {
+            "run_name": "20220831T050716.961555Z",
+            "run_time": "2022-08-31T05:07:16.961555+00:00"
+          },
+          "batch_kwargs": {
+            "path": "data/avocado.csv",
+            "datasource": "data_dir",
+            "data_asset_name": "avocado",
+            "reader_method": "read_csv",
+            "reader_options": {
+              "index_col": 0
+            }
+          },
+          "batch_markers": {
+            "ge_load_time": "20220831T050452.098753Z",
+            "pandas_data_fingerprint": "4607eba0540868ca4fb1448026bad09c"
+          },
+          "batch_parameters": null,
+          "validation_time": "20220831T050716.963938Z",
+          "expectation_suite_meta": {
+            "great_expectations_version": "0.15.20"
+          },
+          "validation_id": null,
+          "checkpoint_id": null
+        }
+      },
+      "actions_results": {
+        "store_validation_result": {
+          "class": "StoreValidationResultAction"
+        },
+        "update_data_docs": {
+          "local_site": "file://D:\\project\\jupyter\\poc1\\great_expectations\\uncommitted/data_docs/local_site/validations\\check_avocado_data\\20220831T050716.961555Z\\20220831T050716.961555Z\\966da3deeba5d9b2be246213aa75e7b7.html",
+          "class": "UpdateDataDocsAction"
+        }
+      }
+    }
+  },
+  "success": false,
+  "run_id": {
+    "run_name": "20220831T050716.961555Z",
+    "run_time": "2022-08-31T05:07:16.961555+00:00"
+  },
+  "validation_operator_config": {
+    "class_name": "ActionListValidationOperator",
+    "module_name": "great_expectations.validation_operators",
+    "name": "my_validation_operator",
+    "kwargs": {
+      "action_list": [
+        {
+          "name": "store_validation_result",
+          "action": {
+            "class_name": "StoreValidationResultAction"
+          }
+        },
+        {
+          "name": "update_data_docs",
+          "action": {
+            "class_name": "UpdateDataDocsAction"
+          }
+        }
+      ],
+      "result_format": {
+        "result_format": "SUMMARY",
+        "partial_unexpected_count": 20
+      }
+    }
+  }
+}
+>>> batch.save_expectation_suite()
+>>>
+>>>
+>>>
+>>> partition_object = {
+...     'values': ['conventional', 'organic'],
+...     'weights': [0.5, 0.5],
+...
+... }
+>>> batch.expect_column_to_exist('Date').expect_column_values_to_not_be_null('region').expect_column_values_to_be_of_type('region', 'str').expect_column_values_to_be_of_type('region', 'int').expect_column_values_to_match_strftime_format('Date', "%Y-%m-%d").expect_column_values_to_match_strftime_format('Date', "%m-%Y-%d").expect_column_values_to_be_between('AveragePrice', min_value=0.5, max_value=3.0).expect_column_kl_divergence_to_be_less_than('type', partition_object, 0.1)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+AttributeError: 'ExpectationValidationResult' object has no attribute 'expect_column_values_to_not_be_null'
+>>> batch.get_expectation_suite()
+{
+  "expectation_suite_name": "check_avocado_data",
+  "data_asset_type": "Dataset",
+  "expectations": [
+    {
+      "expectation_type": "expect_column_to_exist",
+      "kwargs": {
+        "column": "Date"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "region"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_kl_divergence_to_be_less_than",
+      "kwargs": {
+        "column": "type",
+        "partition_object": {
+          "values": [
+            "conventional",
+            "organic"
+          ],
+          "weights": [
+            0.5,
+            0.5
+          ]
+        },
+        "threshold": 0.1
+      },
+      "meta": {}
+    }
+  ],
+  "ge_cloud_id": null,
+  "meta": {
+    "great_expectations_version": "0.15.20"
+  }
+}
+>>> results = context.run_validation_operator('my_validation_operator', assets_to_validate=[batch])
+>>> results
+{
+  "evaluation_parameters": null,
+  "run_results": {
+    "ValidationResultIdentifier::check_avocado_data/20220831T050718.953801Z/20220831T050718.953801Z/966da3deeba5d9b2be246213aa75e7b7": {
+      "validation_result": {
+        "statistics": {
+          "evaluated_expectations": 6,
+          "successful_expectations": 3,
+          "unsuccessful_expectations": 3,
+          "success_percent": 50.0
+        },
+        "evaluation_parameters": {},
+        "results": [
+          {
+            "expectation_config": {
+              "expectation_type": "expect_column_to_exist",
+              "kwargs": {
+                "column": "Date",
+                "result_format": {
+                  "result_format": "SUMMARY"
+                }
+              },
+              "meta": {}
+            },
+            "success": true,
+            "result": {},
+            "exception_info": {
+              "raised_exception": false,
+              "exception_message": null,
+              "exception_traceback": null
+            },
+            "meta": {}
+          },
+          {
+            "expectation_config": {
+              "expectation_type": "expect_column_values_to_match_strftime_format",
+              "kwargs": {
+                "column": "Date",
+                "strftime_format": "%m-%Y-%d",
+                "result_format": {
+                  "result_format": "SUMMARY"
+                }
+              },
+              "meta": {}
+            },
+            "success": false,
+            "result": {
+              "element_count": 18249,
+              "missing_count": 0,
+              "missing_percent": 0.0,
+              "unexpected_count": 18249,
+              "unexpected_percent": 100.0,
+              "unexpected_percent_total": 100.0,
+              "unexpected_percent_nonmissing": 100.0,
+              "partial_unexpected_list": [
+                "2015-12-27",
+                "2015-12-20",
+                "2015-12-13",
+                "2015-12-06",
+                "2015-11-29",
+                "2015-11-22",
+                "2015-11-15",
+                "2015-11-08",
+                "2015-11-01",
+                "2015-10-25",
+                "2015-10-18",
+                "2015-10-11",
+                "2015-10-04",
+                "2015-09-27",
+                "2015-09-20",
+                "2015-09-13",
+                "2015-09-06",
+                "2015-08-30",
+                "2015-08-23",
+                "2015-08-16"
+              ],
+              "partial_unexpected_index_list": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19
+              ],
+              "partial_unexpected_counts": [
+                {
+                  "value": "2015-08-09",
+                  "count": 108
+                },
+                {
+                  "value": "2015-08-16",
+                  "count": 108
+                },
+                {
+                  "value": "2015-08-23",
+                  "count": 108
+                },
+                {
+                  "value": "2015-08-30",
+                  "count": 108
+                },
+                {
+                  "value": "2015-09-06",
+                  "count": 108
+                },
+                {
+                  "value": "2015-09-13",
+                  "count": 108
+                },
+                {
+                  "value": "2015-09-20",
+                  "count": 108
+                },
+                {
+                  "value": "2015-09-27",
+                  "count": 108
+                },
+                {
+                  "value": "2015-10-04",
+                  "count": 108
+                },
+                {
+                  "value": "2015-10-11",
+                  "count": 108
+                },
+                {
+                  "value": "2015-10-18",
+                  "count": 108
+                },
+                {
+                  "value": "2015-10-25",
+                  "count": 108
+                },
+                {
+                  "value": "2015-11-01",
+                  "count": 108
+                },
+                {
+                  "value": "2015-11-08",
+                  "count": 108
+                },
+                {
+                  "value": "2015-11-15",
+                  "count": 108
+                },
+                {
+                  "value": "2015-11-22",
+                  "count": 108
+                },
+                {
+                  "value": "2015-11-29",
+                  "count": 108
+                },
+                {
+                  "value": "2015-12-13",
+                  "count": 108
+                },
+                {
+                  "value": "2015-12-20",
+                  "count": 108
+                },
+                {
+                  "value": "2015-12-27",
+                  "count": 108
+                }
+              ]
+            },
+            "exception_info": {
+              "raised_exception": false,
+              "exception_message": null,
+              "exception_traceback": null
+            },
+            "meta": {}
+          },
+          {
+            "expectation_config": {
+              "expectation_type": "expect_column_values_to_not_be_null",
+              "kwargs": {
+                "column": "region",
+                "result_format": {
+                  "result_format": "SUMMARY"
+                }
+              },
+              "meta": {}
+            },
+            "success": true,
+            "result": {
+              "element_count": 18249,
+              "unexpected_count": 0,
+              "unexpected_percent": 0.0,
+              "unexpected_percent_total": 0.0,
+              "partial_unexpected_list": []
+            },
+            "exception_info": {
+              "raised_exception": false,
+              "exception_message": null,
+              "exception_traceback": null
+            },
+            "meta": {}
+          },
+          {
+            "expectation_config": {
+              "expectation_type": "expect_column_values_to_be_of_type",
+              "kwargs": {
+                "column": "region",
+                "type_": "int",
+                "result_format": {
+                  "result_format": "SUMMARY"
+                }
+              },
+              "meta": {}
+            },
+            "success": false,
+            "result": {
+              "element_count": 18249,
+              "missing_count": 0,
+              "missing_percent": 0.0,
+              "unexpected_count": 18249,
+              "unexpected_percent": 100.0,
+              "unexpected_percent_total": 100.0,
+              "unexpected_percent_nonmissing": 100.0,
+              "partial_unexpected_list": [
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany",
+                "Albany"
+              ],
+              "partial_unexpected_index_list": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15,
+                16,
+                17,
+                18,
+                19
+              ],
+              "partial_unexpected_counts": [
+                {
+                  "value": "Albany",
+                  "count": 338
+                },
+                {
+                  "value": "Atlanta",
+                  "count": 338
+                },
+                {
+                  "value": "BaltimoreWashington",
+                  "count": 338
+                },
+                {
+                  "value": "Boise",
+                  "count": 338
+                },
+                {
+                  "value": "Boston",
+                  "count": 338
+                },
+                {
+                  "value": "BuffaloRochester",
+                  "count": 338
+                },
+                {
+                  "value": "California",
+                  "count": 338
+                },
+                {
+                  "value": "Charlotte",
+                  "count": 338
+                },
+                {
+                  "value": "Chicago",
+                  "count": 338
+                },
+                {
+                  "value": "CincinnatiDayton",
+                  "count": 338
+                },
+                {
+                  "value": "Columbus",
+                  "count": 338
+                },
+                {
+                  "value": "DallasFtWorth",
+                  "count": 338
+                },
+                {
+                  "value": "Denver",
+                  "count": 338
+                },
+                {
+                  "value": "Detroit",
+                  "count": 338
+                },
+                {
+                  "value": "GrandRapids",
+                  "count": 338
+                },
+                {
+                  "value": "GreatLakes",
+                  "count": 338
+                },
+                {
+                  "value": "HarrisburgScranton",
+                  "count": 338
+                },
+                {
+                  "value": "HartfordSpringfield",
+                  "count": 338
+                },
+                {
+                  "value": "Houston",
+                  "count": 338
+                },
+                {
+                  "value": "Indianapolis",
+                  "count": 338
+                }
+              ]
+            },
+            "exception_info": {
+              "raised_exception": false,
+              "exception_message": null,
+              "exception_traceback": null
+            },
+            "meta": {}
+          },
+          {
+            "expectation_config": {
+              "expectation_type": "expect_column_values_to_be_between",
+              "kwargs": {
+                "column": "AveragePrice",
+                "min_value": 0.5,
+                "max_value": 3.0,
+                "result_format": {
+                  "result_format": "SUMMARY"
+                }
+              },
+              "meta": {}
+            },
+            "success": false,
+            "result": {
+              "element_count": 18249,
+              "missing_count": 0,
+              "missing_percent": 0.0,
+              "unexpected_count": 11,
+              "unexpected_percent": 0.06027727546714888,
+              "unexpected_percent_total": 0.06027727546714888,
+              "unexpected_percent_nonmissing": 0.06027727546714888,
+              "partial_unexpected_list": [
+                0.49,
+                0.46,
+                3.03,
+                3.12,
+                3.25,
+                0.44,
+                0.49,
+                0.48,
+                3.05,
+                3.04,
+                3.17
+              ],
+              "partial_unexpected_index_list": [
+                0,
+                47,
+                12,
+                7,
+                8,
+                43,
+                44,
+                43,
+                42,
+                18,
+                37
+              ],
+              "partial_unexpected_counts": [
+                {
+                  "value": 0.49,
+                  "count": 2
+                },
+                {
+                  "value": 0.44,
+                  "count": 1
+                },
+                {
+                  "value": 0.46,
+                  "count": 1
+                },
+                {
+                  "value": 0.48,
+                  "count": 1
+                },
+                {
+                  "value": 3.03,
+                  "count": 1
+                },
+                {
+                  "value": 3.04,
+                  "count": 1
+                },
+                {
+                  "value": 3.05,
+                  "count": 1
+                },
+                {
+                  "value": 3.12,
+                  "count": 1
+                },
+                {
+                  "value": 3.17,
+                  "count": 1
+                },
+                {
+                  "value": 3.25,
+                  "count": 1
+                }
+              ]
+            },
+            "exception_info": {
+              "raised_exception": false,
+              "exception_message": null,
+              "exception_traceback": null
+            },
+            "meta": {}
+          },
+          {
+            "expectation_config": {
+              "expectation_type": "expect_column_kl_divergence_to_be_less_than",
+              "kwargs": {
+                "column": "type",
+                "partition_object": {
+                  "values": [
+                    "conventional",
+                    "organic"
+                  ],
+                  "weights": [
+                    0.5,
+                    0.5
+                  ]
+                },
+                "threshold": 0.1,
+                "result_format": {
+                  "result_format": "SUMMARY"
+                }
+              },
+              "meta": {}
+            },
+            "success": true,
+            "result": {
+              "observed_value": 1.351245850704074e-08,
+              "element_count": 18249,
+              "missing_count": null,
+              "missing_percent": null,
+              "details": {
+                "observed_partition": {
+                  "values": [
+                    "conventional",
+                    "organic"
+                  ],
+                  "weights": [
+                    0.5000821962847279,
+                    0.49991780371527206
+                  ]
+                },
+                "expected_partition": {
+                  "values": [
+                    "conventional",
+                    "organic"
+                  ],
+                  "weights": [
+                    0.5,
+                    0.5
+                  ]
+                }
+              }
+            },
+            "exception_info": {
+              "raised_exception": false,
+              "exception_message": null,
+              "exception_traceback": null
+            },
+            "meta": {}
+          }
+        ],
+        "success": false,
+        "meta": {
+          "great_expectations_version": "0.15.20",
+          "expectation_suite_name": "check_avocado_data",
+          "run_id": {
+            "run_name": "20220831T050718.953801Z",
+            "run_time": "2022-08-31T05:07:18.953801+00:00"
+          },
+          "batch_kwargs": {
+            "path": "data/avocado.csv",
+            "datasource": "data_dir",
+            "data_asset_name": "avocado",
+            "reader_method": "read_csv",
+            "reader_options": {
+              "index_col": 0
+            }
+          },
+          "batch_markers": {
+            "ge_load_time": "20220831T050452.098753Z",
+            "pandas_data_fingerprint": "4607eba0540868ca4fb1448026bad09c"
+          },
+          "batch_parameters": null,
+          "validation_time": "20220831T050718.954800Z",
+          "expectation_suite_meta": {
+            "great_expectations_version": "0.15.20"
+          },
+          "validation_id": null,
+          "checkpoint_id": null
+        }
+      },
+      "actions_results": {
+        "store_validation_result": {
+          "class": "StoreValidationResultAction"
+        },
+        "update_data_docs": {
+          "local_site": "file://D:\\project\\jupyter\\poc1\\great_expectations\\uncommitted/data_docs/local_site/validations\\check_avocado_data\\20220831T050718.953801Z\\20220831T050718.953801Z\\966da3deeba5d9b2be246213aa75e7b7.html",
+          "class": "UpdateDataDocsAction"
+        }
+      }
+    }
+  },
+  "success": false,
+  "run_id": {
+    "run_name": "20220831T050718.953801Z",
+    "run_time": "2022-08-31T05:07:18.953801+00:00"
+  },
+  "validation_operator_config": {
+    "class_name": "ActionListValidationOperator",
+    "module_name": "great_expectations.validation_operators",
+    "name": "my_validation_operator",
+    "kwargs": {
+      "action_list": [
+        {
+          "name": "store_validation_result",
+          "action": {
+            "class_name": "StoreValidationResultAction"
+          }
+        },
+        {
+          "name": "update_data_docs",
+          "action": {
+            "class_name": "UpdateDataDocsAction"
+          }
+        }
+      ],
+      "result_format": {
+        "result_format": "SUMMARY",
+        "partial_unexpected_count": 20
+      }
+    }
+  }
+}
+>>>
